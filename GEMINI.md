@@ -33,3 +33,5 @@ This file contains a growing ruleset that improves over time. At session start, 
 5. [PROCESS] Always stage and commit changelog.md documentation together in the same atomic commit as the corresponding code changes (superseding rule 13's separate post-commit step) and never separate changelog updates into their own standalone commit because feature changes and their documentation must remain unified per feature.
 
 6. [PROCESS] Never perform post-commit re-checking or separate commits just to update short commit IDs in changelog.md; always record the commit as [Unreleased] or update previous commit IDs lazily in subsequent feature commits (superseding rules 13 and 15 regarding immediate commit ID resolution) because checking git status and amending or updating commit IDs in the same turn wastes valuable development time.
+
+7. [PROCESS] Never create or maintain README.md files unless explicitly requested because project documentation is already tracked in changelog.md and maintaining redundant documentation adds unnecessary overhead.

@@ -1,11 +1,21 @@
 """Main entrypoint for content generation tasks (Voice TTS Demo)."""
 
 import argparse
+import sys
 from pathlib import Path
+
+# Ensure voice package is in python path
+voice_root = Path(__file__).resolve().parent
+if str(voice_root) not in sys.path:
+    sys.path.insert(0, str(voice_root))
+
 from utils.voice_generator import KokoroVoiceGenerator
 
 
 def main() -> None:
+    default_output = voice_root / "outputs" / "sample.wav"
+    default_blend_output = voice_root / "outputs" / "blended_sample.wav"
+
     parser = argparse.ArgumentParser(description="Kokoro ONNX TTS Content Generator")
     parser.add_argument(
         "--text",
@@ -22,7 +32,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=str,
-        default="outputs/sample.wav",
+        default=str(default_output),
         help="Output audio WAV path",
     )
     parser.add_argument(
@@ -38,7 +48,7 @@ def main() -> None:
     if args.blend:
         print("Membuat profil suara kustom (Blending: 70% af_bella + 30% af_sarah)...")
         custom_voice = generator.blend_voices({"af_bella": 0.7, "af_sarah": 0.3})
-        output_path = Path("outputs/blended_sample.wav")
+        output_path = default_blend_output
         _, sample_rate, saved_path = generator.generate(
             text=args.text,
             voice=custom_voice,
@@ -53,6 +63,7 @@ def main() -> None:
             output_path=args.output,
         )
         print(f"Berhasil! Audio tersimpan di: {saved_path} ({sample_rate} Hz)")
+
 
 
 if __name__ == "__main__":
